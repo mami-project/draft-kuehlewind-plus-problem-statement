@@ -41,7 +41,13 @@ informative:
 
 --- abstract
 
-
+Stack ossification due to middlebox on the communication path 
+that makes implicit assumption about the traffic passing through them 
+hinders protocol evolution and innovation.
+This document details this problem and respective deployment challenges, 
+identifies demands for the solution space, and list initial
+use cases that must be addressed by a proposed solution to provide 
+deployment incentives.
 
 
 --- middle
@@ -124,9 +130,9 @@ enhancement these 'upgrades' would provide). QUIC falls back to TCP if either
 no UDP-based connectivity can be established or the experienced performance of
 QUIC is lower than expected. We do see blocking of TLS already today that often leads to 
 fallbacks to unencrypted communication: {{RIPE72}} reports 25% of blocking of
-TLS connection over port 80 in mobile network, while blocking goes up to 70%
+TLS connection over port 80 in mobile networks, while blocking goes up to 70%
 for users that are known to be behind a proxy. Blocking by proxies might be 
-an instant of accidental blocking but is likely to continue to happen if we don't
+an instant of accidental mangling but is likely to continue to happen if we don't
 enable a way to communicate intents to middleboxes. 
 
 This document proposes explicit signaling to and from middleboxes about 
@@ -134,10 +140,10 @@ transport and path semantics and traffic characteristic to enable
 encryption of existing transport protocol headers as a solution to the 
 ossification problem described above. The next section further specifies 
 derived demands on the protocol design space for a new or the extension of
-an existing protocol to implement such signaling.
-Most important points are endpoint control over and minimization 
+an existing protocol to provide such signaling.
+Most important points are a) endpoint control over and minimization 
 of exposed information to avoid future ossification that again leads to network devices
-making implicit assumptions as well as the ability to make any unauthorized 
+making implicit assumptions as well as b) the ability to make any unauthorized 
 middleboxes mangling detectable as the lack of this detectability in today's protocols 
 is one of the mayor root causes for the ossification problem we have today.
 Detection of mangling together with the ability to have an endpoint-authorized
@@ -148,7 +154,7 @@ should support and unauthorized mangling.
 
 # Solution Design Space for the Path Layer
 
-Given there is no ability for middlebox signaling in the current Internet architecture 
+Given there is no ability for path signaling in the current Internet architecture 
 (which led to today's situation where middleboxes make implicit assumptions 
 based on the information that are visible on other layers),
 we define any mechansim for this kind of communication as being part of a new path layer. 
@@ -165,7 +171,7 @@ The path layer needs to provide:
 
 - endpoint control over explicit exposure and detectability of middlebox mangling, and
 
-- and all this without the requirement for a trust relationship between the endpoints and middleboxes to signal basic semantics as provided today, but potential support to utilize such a relationship if it exists.
+- all this without the requirement for a trust relationship between the endpoints and middleboxes to signal basic semantics as provided today, but potential support to utilize such a relationship if it exists.
 
 Further requirements for protocol design that also consider 
 purely technical aspects with respect to, e.g., deployability are 
@@ -209,7 +215,7 @@ in-network functionality.
 
 However, the case where there is an existing trust relationship 
 between an endpoint and one or multiple middleboxes on the path 
-is rather rare. This implies that while endpoints can verify the integrity of information
+is rather rare today. This implies that while endpoints can verify the integrity of information
 exposed by remote endpoints, they cannot verify the integrity of information
 exposed by middleboxes and middleboxes cannot verify the integrity of any
 information at all. In limited situations where a trust relationship can be
@@ -227,8 +233,8 @@ predictable way. This leads to incentives for endpoints to lie about their
 traffic to gain advantage over traffic from other endpoints.
 
 As, in the general case, we don't assume a pre-existing trust relationship between the
-communication endpoints and any middlebox or router on the path.  We must
-therefore always assume that information that is exposed can be incorrect,
+communication endpoints and any middlebox or router on the path, we must
+always assume that information that is exposed can be incorrect,
 and/or that the information will be ignored. That means, if there is no 
 trust relationship established, signals on the path layer can only be declarative, 
 in the sense that the endpoints reveal information about intended properties of traffic and hints
@@ -250,8 +256,7 @@ approach reduces the risk to privacy through inadvertent irrelevant metadata
 exposure, reduces the amount of information available for application
 fingerprinting, and reduces the risk that exposed information could 
 otherwise be used for unintended purposes leading to unwanted ossification.
-
-Any information exposure under endpoint control must avoid to enable a 
+Further, any information exposure under endpoint control must avoid to enable a 
 linkage between that information and encrypted information in the higher-level data.
 
 Given we assume no direct relationship between an endpoint
@@ -266,7 +271,7 @@ as a defined interface between endpoints and the path under endpoint-control.
 To still enable innovation in the (encrypted) higher layers, any exposed information
 must be transport independent to not enforce new unwanted restriction on the higher layers.
 As we do not know the requirements of future transport protocol or services, it is not clear
-if we can now make a decision about what should be ossified. An extendable design of 
+if we can now make a decision today about what should be ossified. An extendable design for 
 any mechanism in the path layer would allow changes to these decision (to a certain extend).
 While extensibility enables protocol evolution in itself, or even transition to comply new
 mechanisms, it also adds complexity, overhead, and risk of misuse and unauthorized exploitation
@@ -277,13 +282,12 @@ minimum.
 
 Extensibility in general makes it possible to enlarge the maximum number of available bits,
 therefore as long as any extensibility is implemented using the number of available bits as a restriction
-on the information exposed is not possible. Further any available bits that have no dedicated use 
+on the information exposed is not possible. Further, any available bits that have no dedicated use 
 at a certain part of a communication (e.g. reserved bits as an simple example) can be exploit as a
 side channel to directly signal information or connect available information with certain packets.
 See {{I-D.trammell-privsec-defeating-tcpip-meta}} for further examples.
 
-Any realization
-of a signaling protocol which does not preserve the security properties of applications
+Any realization of a signaling protocol which does not preserve the security properties of applications
 with respect to their operation without this extension, or
 which presents a threat to end-user privacy with respect to operation without
 the extension, is not likely to be deployed.
@@ -300,10 +304,11 @@ as well as additional mechanisms that may or may not work,
 e.g., ICMP {{RFC0792}} that might be blocked.
 To maintain the status quo or even improve network monitoring and 
 failure detection mechanisms it is essential to integrate facilities for supporting 
-troubleshooting into the pat layer as an integral part that cannot be separated 
+troubleshooting into the path layer as an integral part that cannot be separated 
 from the basic functionality provided in the path layer. Further given that these
 information will be transport-independent and under endpoint control, this simplify 
-trouble-shooting and allows for optimization.
+trouble-shooting and allows for optimization based on the knowledge the endpoint 
+already has about the traffic characteristics.
 
 
 # Initial Use Cases
