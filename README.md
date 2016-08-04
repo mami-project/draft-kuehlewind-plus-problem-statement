@@ -1,9 +1,9 @@
-# Abstract Mechanisms for a Cooperative Path Layer under Endpoint Contol
+# Problem Statement and Initial Use Cases for a Path Layer UDP Substrate (PLUS)
 
-This is the working area for the Individual internet-draft, "Abstract Mechanisms for a Cooperative Path Layer under Endpoint Contol".
+This is the working area for the Individual internet-draft, "Problem Statement and Initial Use Cases for a Path Layer UDP Substrate (PLUS)".
 
-* [Editor's copy](https://mami-project.github.io/draft-trammell-plus-abstract-mech/)
-* [Individual Draft] (https://tools.ietf.org/html/draft-trammell-plus-abstract-mech)
+* [Editor's copy](https://mami-project.github.io/draft-kuehlewind-plus-problem-statement/)
+* [Individual Draft] (https://tools.ietf.org/html/draft-kuehlewind-plus-problem-statement)
 
 
 ## Building the Draft
