@@ -2,8 +2,8 @@
 
 This is the working area for the Individual internet-draft, "Problem Statement and Initial Use Cases for a Path Layer UDP Substrate (PLUS)".
 
-<!--* [Editor's copy](https://mami-project.github.io/draft-kuehlewind-plus-problem-statement/)
-* [Individual Draft] (https://tools.ietf.org/html/draft-kuehlewind-plus-problem-statement)-->
+* [Editor's copy](https://mami-project.github.io/draft-kuehlewind-plus-problem-statement/)
+<!--* [Individual Draft] (https://tools.ietf.org/html/draft-kuehlewind-plus-problem-statement)-->
 
 
 ## Building the Draft
