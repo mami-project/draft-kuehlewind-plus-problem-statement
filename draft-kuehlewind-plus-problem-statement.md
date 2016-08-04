@@ -34,9 +34,9 @@ author:
 
 informative:
   RFC0792:
+  RFC6223:
   I-D.kuehlewind-spud-use-cases:
   I-D.trammell-spud-req:
-  I-D.trammell-privsec-defeating-tcpip-meta:
 
 
 --- abstract
@@ -129,7 +129,7 @@ deployment of new transport of higher layer mechanisms (despite the performance
 enhancement these 'upgrades' would provide). QUIC falls back to TCP if either
 no UDP-based connectivity can be established or the experienced performance of
 QUIC is lower than expected. We do see blocking of TLS already today that often leads to 
-fallbacks to unencrypted communication: {{RIPE72}} reports 25% of blocking of
+fallbacks to unencrypted communication: [RIPE72] reports 25% of blocking of
 TLS connection over port 80 in mobile networks, while blocking goes up to 70%
 for users that are known to be behind a proxy. Blocking by proxies might be 
 an instant of accidental mangling but is likely to continue to happen if we don't
@@ -175,7 +175,7 @@ The path layer needs to provide:
 
 Further requirements for protocol design that also consider 
 purely technical aspects with respect to, e.g., deployability are 
-detailed in {{I-D.trammell-spud-reqs}}.
+detailed in {{I-D.trammell-spud-req}}.
 
 The following subsections detail further aspects that can be derived form the demands listed above.
 
@@ -285,7 +285,7 @@ therefore as long as any extensibility is implemented using the number of availa
 on the information exposed is not possible. Further, any available bits that have no dedicated use 
 at a certain part of a communication (e.g. reserved bits as an simple example) can be exploit as a
 side channel to directly signal information or connect available information with certain packets.
-See {{I-D.trammell-privsec-defeating-tcpip-meta}} for further examples.
+See [I-D.trammell-privsec-defeating-tcpip-meta] for further examples.
 
 Any realization of a signaling protocol which does not preserve the security properties of applications
 with respect to their operation without this extension, or
