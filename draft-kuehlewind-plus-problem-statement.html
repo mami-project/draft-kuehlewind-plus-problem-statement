@@ -1,0 +1,520 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head profile="http://www.w3.org/2006/03/hcard http://dublincore.org/documents/2008/08/04/dc-html/">
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+
+  <title>Problem Statement and Initial Use Cases for a Path Layer UDP Substrate (PLUS)</title>
+
+<style type="text/css">/*<![CDATA[*/
+@viewport {
+  zoom: 1.0;
+  width: extend-to-zoom;
+}
+@-ms-viewport {
+  width: extend-to-zoom;
+  zoom: 1.0;
+}
+
+@media screen and (min-width: 1024px) {
+  ul.toc, #rfc\.toc {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    right: calc(50vw - 500px);
+    width: 300px;
+    padding: 0 1em;
+    z-index: 1;
+  }
+  #rfc\.toc {
+    top: 16px;
+  }
+  ul.toc {
+    top: 80px;
+    overflow: auto;
+  }
+
+  body {
+    padding-left: 1.5em;
+    padding-right: 29em;
+  }
+}
+
+body {
+  font: 15px "Helvetica Neue",Helvetica,Arial,sans-serif;
+  color: #333;
+  font-size-adjust: 0.5;
+  line-height: 130%;
+  margin: 2.5em auto;
+  max-width: 724px;
+}
+
+.title, .filename, h1, h2, h3, h4 {
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size-adjust: 0.5;
+  font-weight: 500;
+  color: #333;
+  line-height: 100%;
+  margin: 0.8em 0 0.3em;
+}
+.title { font-size: 36px; }
+h1 { font-size: 30px; }
+h2 { font-size: 24px; }
+h3, h4 { font-size: 18px; }
+h1 a[href], h2 a[href], h3 a[href], h4 a[href] {
+  color: #333;
+}
+
+ul.toc li {
+  list-style: none;
+  text-indent: -2.5em;
+  padding-left: 2.5em;
+  padding-bottom: 5px;
+  margin: 0;
+}
+ul.toc, ul.toc ul {
+  margin: 0 0 0 1.5em;
+}
+
+table {
+  margin-left: 0em;
+  border-collapse: collapse;
+}
+th {
+  text-align: left;
+  border-bottom: 2px solid #ddd;
+}
+td {
+  border-top: 1px solid #ddd;
+  vertical-align: top;
+}
+tr:nth-child(2n+1) > td,
+tr:nth-child(2n+1) > th {
+  background-color: #f9f9f9;
+}
+td.reference {
+  max-width: 200px;
+  border-top: none;
+  padding-right: 1em;
+}
+.right {
+  text-align: right;
+}
+
+
+table.header {
+  width: 100%;
+}
+table.header td {
+  border: none;
+  background-color: transparent;
+  color: black;
+}
+.filename {
+  color: rgb(119, 119, 119);
+  font-size: 23px;
+  font-weight: normal;
+  height: auto;
+  line-height: 100%;
+}
+#rfc\.abstract+p {
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 130%;
+}
+
+samp, tt, code, pre {
+  font: 11pt consolas, monospace;
+  font-size-adjust: none;
+}
+pre {
+  background-color: #eee;
+  border: 1px solid #ddd;
+  overflow-x: auto;
+  padding: 5px;
+  margin: 5px;
+}
+.figure {
+  font-style: italic;
+  margin: 0 1.5em;
+}
+
+address {
+  margin: 10px 0 0;
+}
+.vcard {
+  font-style: normal;
+}
+.vcardline {
+  display: block;
+}
+.vcardline .fn {
+  font-weight: bold;
+}
+.vcardline .hidden {
+  display: none;
+}
+
+dl {
+  margin-left: 1em;
+}
+dl.dl-horizontal: {
+  margin-left: 0;
+}
+dl > dt {
+  float: left;
+  margin-right: 1em;
+}
+dl.nohang > dt {
+  float: none;
+}
+dl > dd {
+  margin-bottom: .5em;
+}
+dl.compact > dd {
+  margin-bottom: 0em;
+}
+dl > dd > dl {
+  margin-top: 0.5em;
+  margin-bottom: 0em;
+}
+ul.empty {
+  list-style-type: none;
+}
+ul.empty li {
+  margin-top: .5em;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid #eee;
+}
+
+a {
+  text-decoration: none;
+}
+a[href] {
+  color: #2a6496;
+}
+a[href]:hover {
+  background-color: #eee;
+}
+
+ol, ul, li, p {
+  padding: 0;
+  margin: 0.5em 0 0.5em 2em;
+}
+li, p {
+  margin-left: 0;
+}
+
+.github-fork-ribbon-wrapper {
+  display: none;
+}
+@media screen and (min-width: 800px) {
+  /* "Fork me on GitHub" CSS ribbon based on
+   * https://github.com/simonwhitaker/github-fork-ribbon-css
+   */
+  .github-fork-ribbon {
+    position: absolute;
+    padding: 2px 0;
+    background-color: #a00;
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15));
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);
+    font: 700 12px "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+    pointer-events: auto;
+
+    top: 38px;
+    right: -45px;
+
+    transform: rotate(45deg);
+  }
+
+  .github-fork-ribbon a[href],
+  .github-fork-ribbon a[href]:hover {
+    color: #fff;
+    background-color: transparent;
+    text-decoration: none;
+    text-shadow: 0 -1px rgba(0, 0, 0, 0.5);
+    text-align: center;
+
+    width: 190px;
+    line-height: 18px;
+
+    display: inline-block;
+    padding: 2px 0;
+
+    border: 1.5px dotted #fff;
+    border-color: rgba(255, 255, 255, 0.6);
+  }
+
+  .github-fork-ribbon-wrapper {
+    display: block;
+    width: 130px;
+    height: 130px;
+    position: absolute;
+    overflow: hidden;
+    top: 0; right: 0;
+    z-index: 2;
+    pointer-events: none;
+  }
+}
+@media screen and (min-width: 1000px) {
+  .github-fork-ribbon-wrapper {
+    position: fixed;
+  }
+/*]]>*/</style>
+
+  <link href="#rfc.toc" rel="Contents"/>
+<link href="#rfc.section.1" rel="Chapter" title="1 Problem Statement"/>
+<link href="#rfc.section.2" rel="Chapter" title="2 Solution Design Space for the Path Layer"/>
+<link href="#rfc.section.2.1" rel="Chapter" title="2.1 Explicit Signaling and Encryption"/>
+<link href="#rfc.section.2.2" rel="Chapter" title="2.2 Trust between Endpoints and Detectability"/>
+<link href="#rfc.section.2.3" rel="Chapter" title="2.3 Endpoint Control"/>
+<link href="#rfc.section.2.3.1" rel="Chapter" title="2.3.1 Trust with Middleboxes and Integrity"/>
+<link href="#rfc.section.2.4" rel="Chapter" title="2.4 Declarative Signaling and Verification"/>
+<link href="#rfc.section.2.5" rel="Chapter" title="2.5 Least Exposure"/>
+<link href="#rfc.section.2.6" rel="Chapter" title="2.6 Transport-Independency and Extensibility"/>
+<link href="#rfc.section.2.7" rel="Chapter" title="2.7 Security and Privacy"/>
+<link href="#rfc.section.2.8" rel="Chapter" title="2.8 Diagnosability and Failure Transparency"/>
+<link href="#rfc.section.3" rel="Chapter" title="3 Initial Use Cases"/>
+<link href="#rfc.section.3.1" rel="Chapter" title="3.1 Exposure of Transport Semantics for Firewall Traversal for UDP-Encapsulated Traffic"/>
+<link href="#rfc.section.3.2" rel="Chapter" title="3.2 Exposure of Transport Semantics for In-Band Measurement and Diagnosability"/>
+<link href="#rfc.section.3.3" rel="Chapter" title="3.3 Exposure of On-Path State for Lifetime Discovery and Management (???)"/>
+<link href="#rfc.section.3.4" rel="Chapter" title="3.4 Exposure of Per-Packet Information (???)"/>
+<link href="#rfc.section.4" rel="Chapter" title="4 IANA Considerations"/>
+<link href="#rfc.section.5" rel="Chapter" title="5 Security Considerations"/>
+<link href="#rfc.section.6" rel="Chapter" title="6 Acknowledgments"/>
+<link href="#rfc.references" rel="Chapter" title="7 Informative References"/>
+<link href="#rfc.authors" rel="Chapter"/>
+
+
+  <meta name="generator" content="xml2rfc version 2.5.0 - http://tools.ietf.org/tools/xml2rfc" />
+  <link rel="schema.dct" href="http://purl.org/dc/terms/" />
+
+  <meta name="dct.creator" content="Kuehlewind, M., Ed. and B. Trammell, Ed." />
+  <meta name="dct.identifier" content="urn:ietf:id:draft-kuehlewind-plus-problem-statement-latest" />
+  <meta name="dct.issued" scheme="ISO8601" content="2016-8-03" />
+  <meta name="dct.abstract" content="Stack ossification due to middlebox on the communication path that makes implicit assumption about the traffic passing through them hinders protocol evolution and innovation.  This document details this problem and respective deployment challenges, identifies demands for the solution space, and list initial use cases that must be addressed by a proposed solution to provide deployment incentives." />
+  <meta name="description" content="Stack ossification due to middlebox on the communication path that makes implicit assumption about the traffic passing through them hinders protocol evolution and innovation.  This document details this problem and respective deployment challenges, identifies demands for the solution space, and list initial use cases that must be addressed by a proposed solution to provide deployment incentives." />
+
+</head>
+
+<body>
+
+  <table class="header">
+    <tbody>
+    
+    	<tr>
+  <td class="left">Network Working Group</td>
+  <td class="right">M. Kuehlewind, Ed.</td>
+</tr>
+<tr>
+  <td class="left">Internet-Draft</td>
+  <td class="right">B. Trammell, Ed.</td>
+</tr>
+<tr>
+  <td class="left">Intended status: Informational</td>
+  <td class="right">ETH Zurich</td>
+</tr>
+<tr>
+  <td class="left">Expires: February 4, 2017</td>
+  <td class="right">August 03, 2016</td>
+</tr>
+
+    	
+    </tbody>
+  </table>
+
+  <p class="title">Problem Statement and Initial Use Cases for a Path Layer UDP Substrate (PLUS)<br />
+  <span class="filename">draft-kuehlewind-plus-problem-statement-latest</span></p>
+  
+  <h1 id="rfc.abstract">
+  <a href="#rfc.abstract">Abstract</a>
+</h1>
+<p>Stack ossification due to middlebox on the communication path that makes implicit assumption about the traffic passing through them hinders protocol evolution and innovation.  This document details this problem and respective deployment challenges, identifies demands for the solution space, and list initial use cases that must be addressed by a proposed solution to provide deployment incentives.</p>
+<h1 id="rfc.status">
+  <a href="#rfc.status">Status of This Memo</a>
+</h1>
+<p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
+<p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
+<p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
+<p>This Internet-Draft will expire on February 4, 2017.</p>
+<h1 id="rfc.copyrightnotice">
+  <a href="#rfc.copyrightnotice">Copyright Notice</a>
+</h1>
+<p>Copyright (c) 2016 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
+<p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (http://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
+
+  
+  <hr class="noprint" />
+  <h1 class="np" id="rfc.toc"><a href="#rfc.toc">Table of Contents</a></h1>
+  <ul class="toc">
+
+  	<li>1.   <a href="#rfc.section.1">Problem Statement</a></li>
+<li>2.   <a href="#rfc.section.2">Solution Design Space for the Path Layer</a></li>
+<ul><li>2.1.   <a href="#rfc.section.2.1">Explicit Signaling and Encryption</a></li>
+<li>2.2.   <a href="#rfc.section.2.2">Trust between Endpoints and Detectability</a></li>
+<li>2.3.   <a href="#rfc.section.2.3">Endpoint Control</a></li>
+<ul><li>2.3.1.   <a href="#rfc.section.2.3.1">Trust with Middleboxes and Integrity</a></li>
+</ul><li>2.4.   <a href="#rfc.section.2.4">Declarative Signaling and Verification</a></li>
+<li>2.5.   <a href="#rfc.section.2.5">Least Exposure</a></li>
+<li>2.6.   <a href="#rfc.section.2.6">Transport-Independency and Extensibility</a></li>
+<li>2.7.   <a href="#rfc.section.2.7">Security and Privacy</a></li>
+<li>2.8.   <a href="#rfc.section.2.8">Diagnosability and Failure Transparency</a></li>
+</ul><li>3.   <a href="#rfc.section.3">Initial Use Cases</a></li>
+<ul><li>3.1.   <a href="#rfc.section.3.1">Exposure of Transport Semantics for Firewall Traversal for UDP-Encapsulated Traffic</a></li>
+<li>3.2.   <a href="#rfc.section.3.2">Exposure of Transport Semantics for In-Band Measurement and Diagnosability</a></li>
+<li>3.3.   <a href="#rfc.section.3.3">Exposure of On-Path State for Lifetime Discovery and Management (???)</a></li>
+<li>3.4.   <a href="#rfc.section.3.4">Exposure of Per-Packet Information (???)</a></li>
+</ul><li>4.   <a href="#rfc.section.4">IANA Considerations</a></li>
+<li>5.   <a href="#rfc.section.5">Security Considerations</a></li>
+<li>6.   <a href="#rfc.section.6">Acknowledgments</a></li>
+<li>7.   <a href="#rfc.references">Informative References</a></li>
+<li><a href="#rfc.authors">Authors' Addresses</a></li>
+
+
+  </ul>
+
+  <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> <a href="#problem-statement" id="problem-statement">Problem Statement</a></h1>
+<p id="rfc.section.1.p.1">Given the increasing number of middleboxes in the Internet, we see an ossification of the protocol stack that makes it difficult or at least overly complicated to deploy new protocols or protocol extensions. Examples are new transport protocols such as SCTP or QUIC, which can only be deployed using UDP as an encapsulation protocol, or simply TCP extensions that might be stripped at any point during the connection. This ossification does not only make protocol design complicated as such cases must be handled by fall-back or happy-eyeball mechanisms, it also hinders innovation in the transport layer that is needed to establish new services with different traffic characteristic and network requirements, given that performance enhancing extensions are in many case just not usable.</p>
+<p id="rfc.section.1.p.2">While UDP encapsulation provides the needed port information which is necessary for rather simple network mechanisms such NAT, stateful network elements such as most firewalls require more information about the flow semantics to maintain state, and therefore potentially might block everything other than TCP. In addition, some network operators assume that UDP is not often used for high-volume traffic, and is often a source of spoofing or reflected attack traffic, and is therefore safe to block or rate-limit, even though the volume of (good) UDP traffic is growing, mostly due to voice and video (real-time) services (e.g. RTCWEB) where TCP is not suitable.</p>
+<p id="rfc.section.1.p.3">Middleboxes contribute to stack ossification through two basic mechanisms: The first is essential manipulation of packets. An essential manipulation is something the middlebox was explicitly deployed to do. The second, accidental manipulation, is either a side effect of an essential manipulation, an effect of an implementation error, or an effect of a configuration or deployment error. Accidental manipulations arise from a mismatch between the actual traffic on the network and the assumptions made by the designers of the middlebox about that traffic.  These tend to persist in the network, given the long development and deployment cycles of networking equipment.</p>
+<p id="rfc.section.1.p.4">In general, protocol ossification happens when network devices interpret transport or higher layer (header or even payload) information as input for making decisions for their provided in-network function, without the knowledge or approval of the endpoint. Even though these protocols were not designed to be interpreted by in-network devices, this is possible because these information are today most often available in plain text. Given the lack of a way to explicitly request or signal information from and to middleboxes, this had lead to a situation where connectivity breaks if the assumption made by the network devices does not map the observed traffic, e.g. when new protocols or protocol extensions are used.</p>
+<p id="rfc.section.1.p.5">While the essential manipulation of packets should be minimized to support innovation in the transport and application layer, there are in-network functions that provide value for both the traffic and therefore the user (experience) as well as the operator&#8217;s traffic management decisons when resources are scarce. Further, new protocols or protocol extension can benefit from additional knowledge provided by the network about the expected network conditions.</p>
+<p id="rfc.section.1.p.6">Encryption of the transport layer headers (and payload) inside UDP as an encapsulation layer would solve the problem of middlebox mangling.  However, this would also break a large number of deployed functions in the Internet, e.g. network address translators and firewalls that rely on TCP&#8217;s SYN/SYNACK semantic to set up state. Even if firewall vendors and administrators are willing to change firewall rules to allow more diverse UDP services, it is hard to track session state for UDP traffic. As UDP is unidirectional, it is unknown whether the receiver is willing to accept the connection. Further there is no way to figure how long state must be maintained once established. To efficiently establish state along the path an explicit contract between endpoint and stateful devices on the path is needed, as we have it implicitly with TCP today. We note that these resulting deployment issues led the TCP increased security (tcpinc) working group to decide to not encrypt the TCP header.</p>
+<p id="rfc.section.1.p.7">Further, not providing any support for existing and valuable in-network functions, can incentive blocking of encrypted traffic. Given the ossification we already have today, every new protocol or protocol extension must address today&#8217;s deployment problems by the use of fallback mechanisms given service providers can usually not risk to lose connectivity for some of their costumers due to the deployment of new transport of higher layer mechanisms (despite the performance enhancement these &#8216;upgrades&#8217; would provide). QUIC falls back to TCP if either no UDP-based connectivity can be established or the experienced performance of QUIC is lower than expected. We do see blocking of TLS already today that often leads to fallbacks to unencrypted communication: [RIPE72] reports 25% of blocking of TLS connection over port 80 in mobile networks, while blocking goes up to 70% for users that are known to be behind a proxy. Blocking by proxies might be an instant of accidental mangling but is likely to continue to happen if we don&#8217;t enable a way to communicate intents to middleboxes.</p>
+<p id="rfc.section.1.p.8">This document proposes explicit signaling to and from middleboxes about transport and path semantics and traffic characteristic to enable encryption of existing transport protocol headers as a solution to the ossification problem described above. The next section further specifies derived demands on the protocol design space for a new or the extension of an existing protocol to provide such signaling.  Most important points are a) endpoint control over and minimization of exposed information to avoid future ossification that again leads to network devices making implicit assumptions as well as b) the ability to make any unauthorized middleboxes mangling detectable as the lack of this detectability in today&#8217;s protocols is one of the mayor root causes for the ossification problem we have today.  Detection of mangling together with the ability to have an endpoint-authorized communication with in-network devices on the communication path will also help to draw a clearer line between in-network functionality that the Internet architecture should support and unauthorized mangling.</p>
+<h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#solution-design-space-for-the-path-layer" id="solution-design-space-for-the-path-layer">Solution Design Space for the Path Layer</a></h1>
+<p id="rfc.section.2.p.1">Given there is no ability for path signaling in the current Internet architecture (which led to today&#8217;s situation where middleboxes make implicit assumptions based on the information that are visible on other layers), we define any mechansim for this kind of communication as being part of a new path layer.  This does not imply that these mechanisms must be implemented in a separate protocol.</p>
+<p id="rfc.section.2.p.2">The following points summarize the demands on a solution for path signaling based on the described stack ossification and resulting protocol deployment and evolution problems above.</p>
+<p id="rfc.section.2.p.3">The path layer needs to provide:</p>
+<p/>
+
+<ul>
+  <li>a clear boundary between what the path can see and what it cannot, enforced by encryption requiring a trust relation between the endpoints,</li>
+  <li>transport-independent, in-band signaling of transport and path semantics (based on UDP encapsulation) to enable protocol evolution within the encrypted communication,</li>
+  <li>endpoint control over explicit exposure and detectability of middlebox mangling, and</li>
+  <li>all this without the requirement for a trust relationship between the endpoints and middleboxes to signal basic semantics as provided today, but potential support to utilize such a relationship if it exists.</li>
+</ul>
+<p id="rfc.section.2.p.5">Further requirements for protocol design that also consider purely technical aspects with respect to, e.g., deployability are detailed in <a href="#I-D.trammell-spud-req">[I-D.trammell-spud-req]</a>.</p>
+<p id="rfc.section.2.p.6">The following subsections detail further aspects that can be derived form the demands listed above.</p>
+<h1 id="rfc.section.2.1"><a href="#rfc.section.2.1">2.1.</a> <a href="#explicit-signaling-and-encryption" id="explicit-signaling-and-encryption">Explicit Signaling and Encryption</a></h1>
+<p id="rfc.section.2.1.p.1">Compared to the present regime where middleboxes are built on implicit assumptions about the protocols the endpoints are speaking to derive information about the traffic, e.g. through Deep Packet Inspection (DPI), we see explicit signaling of transport and path semantics and traffic characteristic as the basis for large-scale deployment of encryption without an incentive for network blocking.</p>
+<h1 id="rfc.section.2.2"><a href="#rfc.section.2.2">2.2.</a> <a href="#trust-between-endpoints-and-detectability" id="trust-between-endpoints-and-detectability">Trust between Endpoints and Detectability</a></h1>
+<p id="rfc.section.2.2.p.1">Detection of middlebox mangling by integrity protection of any plain text data/bits requires a trust relationship between endpoints.  While endpoints often establish a trust relationship at some point during their communication, transport protocols today usually don&#8217;t take advance of this existing ability to protect their bits.  As any information above the path layer must be encrypted to avoid ossification in these layers, the same trust relationship can be utilized to enable integrity protection in the path layer itself.  If nor the transport protocol itself or the application layer provide such a trust relationship, the path layer must impose an additional shim, e.g. utilizing DTLS, for both encryption of these higher layers and integrity of any information exposed by the endpoint in the path layer.</p>
+<h1 id="rfc.section.2.3"><a href="#rfc.section.2.3">2.3.</a> <a href="#endpoint-control" id="endpoint-control">Endpoint Control</a></h1>
+<p id="rfc.section.2.3.p.1">Explicit signaling and detectability together have the added benefit that applications (and thereby users) have control over the information exposed to the network, providing a means by which we can re-balance the current tussle between user privacy and in-network functionality.</p>
+<h1 id="rfc.section.2.3.1"><a href="#rfc.section.2.3.1">2.3.1.</a> <a href="#trust-with-middleboxes-and-integrity" id="trust-with-middleboxes-and-integrity">Trust with Middleboxes and Integrity</a></h1>
+<p id="rfc.section.2.3.1.p.1">However, the case where there is an existing trust relationship between an endpoint and one or multiple middleboxes on the path is rather rare today. This implies that while endpoints can verify the integrity of information exposed by remote endpoints, they cannot verify the integrity of information exposed by middleboxes and middleboxes cannot verify the integrity of any information at all. In limited situations where a trust relationship can be established, e.g., between a managed end-user device in an enterprise network and a corporate firewall, this verifiability can be improved.</p>
+<h1 id="rfc.section.2.4"><a href="#rfc.section.2.4">2.4.</a> <a href="#declarative-signaling-and-verification" id="declarative-signaling-and-verification">Declarative Signaling and Verification</a></h1>
+<p id="rfc.section.2.4.p.1">There are many existing attempts to build in-band signaling for, e.g., \ac{QoS}).  However, these have largely failed to deploy at Internet-scale, in part because the imperative nature of the signaling: a given signal is essentially a command to the on-path device to handle the packet in a certain, predetermined, predictable way. This leads to incentives for endpoints to lie about their traffic to gain advantage over traffic from other endpoints.</p>
+<p id="rfc.section.2.4.p.2">As, in the general case, we don&#8217;t assume a pre-existing trust relationship between the communication endpoints and any middlebox or router on the path, we must always assume that information that is exposed can be incorrect, and/or that the information will be ignored. That means, if there is no trust relationship established, signals on the path layer can only be declarative, in the sense that the endpoints reveal information about intended properties of traffic and hints about which tradeoffs the traffic is willing to accept, and the path reveals information about intended traffic handling. However, there are no guarantees to receive a certain treatment from the network.  Providing only information that can be verified by e.g. on-path measurement (but with a potential high(er) effort) or are bounded to a trade-off reduce the incentive to lie, even in entirely untrusted environments.</p>
+<h1 id="rfc.section.2.5"><a href="#rfc.section.2.5">2.5.</a> <a href="#least-exposure" id="least-exposure">Least Exposure</a></h1>
+<p id="rfc.section.2.5.p.1">Path signaling should follow the principle of least exposure: for all potential use case, we attempt to define the minimum amount of information exposed by endpoints and middleboxes required by the proposed mechanism to solve the identified problem. In addition to being good engineering practice, this approach reduces the risk to privacy through inadvertent irrelevant metadata exposure, reduces the amount of information available for application fingerprinting, and reduces the risk that exposed information could otherwise be used for unintended purposes leading to unwanted ossification.  Further, any information exposure under endpoint control must avoid to enable a linkage between that information and encrypted information in the higher-level data.</p>
+<p id="rfc.section.2.5.p.2">Given we assume no direct relationship between an endpoint and a certain network devices, potential use cases include in-network functions related to traffic management as well as security function provided by the network.</p>
+<h1 id="rfc.section.2.6"><a href="#rfc.section.2.6">2.6.</a> <a href="#transport-independency-and-extensibility" id="transport-independency-and-extensibility">Transport-Independency and Extensibility</a></h1>
+<p id="rfc.section.2.6.p.1">Any information that will be exposed in clear (not matter if integrity protected or not) will ossify. The task of the path layer is to enable this kind of ossification as a defined interface between endpoints and the path under endpoint-control.  To still enable innovation in the (encrypted) higher layers, any exposed information must be transport independent to not enforce new unwanted restriction on the higher layers.  As we do not know the requirements of future transport protocol or services, it is not clear if we can now make a decision today about what should be ossified. An extendable design for any mechanism in the path layer would allow changes to these decision (to a certain extend).  While extensibility enables protocol evolution in itself, or even transition to comply new mechanisms, it also adds complexity, overhead, and risk of misuse and unauthorized exploitation of the provided facilities. Therefore extensibility must be designed carefully and restricted to a minimum.</p>
+<h1 id="rfc.section.2.7"><a href="#rfc.section.2.7">2.7.</a> <a href="#security-and-privacy" id="security-and-privacy">Security and Privacy</a></h1>
+<p id="rfc.section.2.7.p.1">Extensibility in general makes it possible to enlarge the maximum number of available bits, therefore as long as any extensibility is implemented using the number of available bits as a restriction on the information exposed is not possible. Further, any available bits that have no dedicated use at a certain part of a communication (e.g. reserved bits as an simple example) can be exploit as a side channel to directly signal information or connect available information with certain packets.  See [I-D.trammell-privsec-defeating-tcpip-meta] for further examples.</p>
+<p id="rfc.section.2.7.p.2">Any realization of a signaling protocol which does not preserve the security properties of applications with respect to their operation without this extension, or which presents a threat to end-user privacy with respect to operation without the extension, is not likely to be deployed.</p>
+<h1 id="rfc.section.2.8"><a href="#rfc.section.2.8">2.8.</a> <a href="#diagnosability-and-failure-transparency" id="diagnosability-and-failure-transparency">Diagnosability and Failure Transparency</a></h1>
+<p id="rfc.section.2.8.p.1">Troubleshooting of network-related problems with transport protocols is key to the smooth operation of a network; this is even more the case when transport protocol headers are encrypted to prevent middlebox meddling not explicitly authorized by the endpoints. Today troubleshooting is realized by utilizing exposed information in the transport header (e.g. sequence numbers and TCP timestamps) as well as additional mechanisms that may or may not work, e.g., ICMP <a href="#RFC0792">[RFC0792]</a> that might be blocked.  To maintain the status quo or even improve network monitoring and failure detection mechanisms it is essential to integrate facilities for supporting troubleshooting into the path layer as an integral part that cannot be separated from the basic functionality provided in the path layer. Further given that these information will be transport-independent and under endpoint control, this simplify trouble-shooting and allows for optimization based on the knowledge the endpoint already has about the traffic characteristics.</p>
+<h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#initial-use-cases" id="initial-use-cases">Initial Use Cases</a></h1>
+<h1 id="rfc.section.3.1"><a href="#rfc.section.3.1">3.1.</a> <a href="#exposure-of-transport-semantics-for-firewall-traversal-for-udp-encapsulated-traffic" id="exposure-of-transport-semantics-for-firewall-traversal-for-udp-encapsulated-traffic">Exposure of Transport Semantics for Firewall Traversal for UDP-Encapsulated Traffic</a></h1>
+<p id="rfc.section.3.1.p.1">Supporting NAT and firewall traversal are fundamental requirements that any new protocol has to support. More specifically, one needs to provide a binding of limited related semantics (start, acknowledgment, and stop) to packets of a flow that are semantically related in terms of the application or higher layer protocol.<br/> By explicitly signaling of such transport semantics, a flow allows middleboxes to use those signals for setting up and tearing down their relevant state (NAT bindings, firewall pinholes), rather than requiring the middlebox to infer this state from continued traffic (such as STUN keep alive packets <a href="#RFC6223">[RFC6223]</a>).</p>
+<p id="rfc.section.3.1.p.2">initiator/responder scheme?</p>
+<h1 id="rfc.section.3.2"><a href="#rfc.section.3.2">3.2.</a> <a href="#exposure-of-transport-semantics-for-in-band-measurement-and-diagnosability" id="exposure-of-transport-semantics-for-in-band-measurement-and-diagnosability">Exposure of Transport Semantics for In-Band Measurement and Diagnosability</a></h1>
+<p id="rfc.section.3.2.p.1">seq# and timestamps</p>
+<h1 id="rfc.section.3.3"><a href="#rfc.section.3.3">3.3.</a> <a href="#exposure-of-on-path-state-for-lifetime-discovery-and-management-" id="exposure-of-on-path-state-for-lifetime-discovery-and-management-">Exposure of On-Path State for Lifetime Discovery and Management (???)</a></h1>
+<p id="rfc.section.3.3.p.1">time-outs? MTU? Max capacity?</p>
+<h1 id="rfc.section.3.4"><a href="#rfc.section.3.4">3.4.</a> <a href="#exposure-of-per-packet-information-" id="exposure-of-per-packet-information-">Exposure of Per-Packet Information (???)</a></h1>
+<p id="rfc.section.3.4.p.1">low-latency trade-off, relative in-flow priority, re-order-sensibility&#8230;?</p>
+<h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a></h1>
+<p id="rfc.section.4.p.1">This document has no actions for IANA.</p>
+<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a></h1>
+<p id="rfc.section.5.p.1">Security and privacy considerations are so far given in the corresponding subsections on security, privacy, and trust&#8230;</p>
+<h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#acknowledgments" id="acknowledgments">Acknowledgments</a></h1>
+<p id="rfc.section.6.p.1">This work is supported by the European Commission under Horizon 2020 grant agreement no. 688421 Measurement and Architecture for a Middleboxed Internet (MAMI), and by the Swiss State Secretariat for Education, Research, and Innovation under contract no. 15.0268. This support does not imply endorsement.</p>
+<h1 id="rfc.references"><a href="#rfc.references">7.</a> Informative References</h1>
+<table>
+  <tbody>
+    <tr>
+      <td class="reference">
+        <b id="I-D.kuehlewind-spud-use-cases">[I-D.kuehlewind-spud-use-cases]</b>
+      </td>
+      <td class="top"><a>K&#252;hlewind, M.</a> and <a>B. Trammell</a>, "<a href="http://tools.ietf.org/html/draft-kuehlewind-spud-use-cases-01">Use Cases for a Substrate Protocol for User Datagrams (SPUD)</a>", Internet-Draft draft-kuehlewind-spud-use-cases-01, March 2016.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="I-D.trammell-spud-req">[I-D.trammell-spud-req]</b>
+      </td>
+      <td class="top"><a>Trammell, B.</a> and <a>M. K&#252;hlewind</a>, "<a href="http://tools.ietf.org/html/draft-trammell-spud-req-04">Requirements for the design of a Substrate Protocol for User Datagrams (SPUD)</a>", Internet-Draft draft-trammell-spud-req-04, May 2016.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC0792">[RFC0792]</b>
+      </td>
+      <td class="top"><a>Postel, J.</a>, "<a href="http://tools.ietf.org/html/rfc792">Internet Control Message Protocol</a>", STD 5, RFC 792, DOI 10.17487/RFC0792, September 1981.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC6223">[RFC6223]</b>
+      </td>
+      <td class="top"><a>Holmberg, C.</a>, "<a href="http://tools.ietf.org/html/rfc6223">Indication of Support for Keep-Alive</a>", RFC 6223, DOI 10.17487/RFC6223, April 2011.</td>
+    </tr>
+  </tbody>
+</table>
+<h1 id="rfc.authors">
+  <a href="#rfc.authors">Authors' Addresses</a>
+</h1>
+<div class="avoidbreak">
+  <address class="vcard">
+	<span class="vcardline">
+	  <span class="fn">Mirja Kuehlewind</span> (editor)
+	  <span class="n hidden">
+		<span class="family-name">Kuehlewind</span>
+	  </span>
+	</span>
+	<span class="org vcardline">ETH Zurich</span>
+	<span class="adr">
+	  <span class="vcardline">Gloriastrasse 35</span>
+
+	  <span class="vcardline">
+		<span class="locality">8092 Zurich</span>,  
+		<span class="region"></span>
+		<span class="code"></span>
+	  </span>
+	  <span class="country-name vcardline">Switzerland</span>
+	</span>
+	<span class="vcardline">EMail: <a href="mailto:mirja.kuehlewind@tik.ee.ethz.ch">mirja.kuehlewind@tik.ee.ethz.ch</a></span>
+
+  </address>
+</div><div class="avoidbreak">
+  <address class="vcard">
+	<span class="vcardline">
+	  <span class="fn">Brian Trammell</span> (editor)
+	  <span class="n hidden">
+		<span class="family-name">Trammell</span>
+	  </span>
+	</span>
+	<span class="org vcardline">ETH Zurich</span>
+	<span class="adr">
+	  <span class="vcardline">Gloriastrasse 35</span>
+
+	  <span class="vcardline">
+		<span class="locality">8092 Zurich</span>,  
+		<span class="region"></span>
+		<span class="code"></span>
+	  </span>
+	  <span class="country-name vcardline">Switzerland</span>
+	</span>
+	<span class="vcardline">EMail: <a href="mailto:ietf@trammell.ch">ietf@trammell.ch</a></span>
+
+  </address>
+</div>
+
+</body>
+</html>
