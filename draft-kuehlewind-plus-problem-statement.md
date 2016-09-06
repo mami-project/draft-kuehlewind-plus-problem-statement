@@ -2,7 +2,7 @@
 title: Problem Statement and Initial Use Cases for a Path Layer UDP Substrate (PLUS)
 abbrev: PLUS Problem Statement
 docname: draft-kuehlewind-plus-problem-statement-latest
-date: 2016-08-03
+date: 2016-09-06
 category: info
 
 ipr: trust200902
@@ -41,29 +41,41 @@ informative:
 
 --- abstract
 
-Stack ossification due to middlebox on the communication path 
-that makes implicit assumption about the traffic passing through them 
-hinders protocol evolution and innovation.
-This document details this problem and respective deployment challenges, 
-identifies demands for the solution space, and list initial
-use cases that must be addressed by a proposed solution to provide 
-deployment incentives.
+The relative ease of manipulation of transport layer headers by on-path
+devices in the Internet has led to protocol stack ossification. It is
+difficult to deploy new protocols or protocol features due to implicit
+assumptions made by middleboxes about the traffic passing through them. Some
+of these middleboxes modify transport headers, as well; these modifications
+generally interfere with the operation and extensibility of the protocol.
+Integrity protection for all headers, and confidentiality protection for those
+that elements along the do not need to see to provide network functionality in
+a transport-independent way, is necessary to rectify this situation.
 
+We introduce the concept of a "path layer", an implicit pseudo-layer in the
+Internet architecture consisting of those in-network functions that make use
+of information above the network layer to function. This document details the
+problems that must be solved by the path layer, as a first step to making this
+layer explicit by giving control to endpoints over the boundary between
+integrity-protected and confidentiality-protected transport layer
+information. It additionally identifies constraints on the solution space, and
+lists initial use cases that must be addressed by a proposed solution to
+provide deployment incentives.
 
 --- middle
 
 # Problem Statement
 
 Given the increasing number of middleboxes in the Internet, we see an
-ossification of the protocol stack that makes it difficult or at least overly complicated to deploy
-new protocols or protocol extensions. Examples are new transport protocols
-such as SCTP or QUIC, which can only be deployed using UDP as an encapsulation
-protocol, or simply TCP extensions that might be stripped at any point during
-the connection. This ossification does not only make protocol design complicated 
-as such cases must be handled by fall-back or happy-eyeball mechanisms, 
-it also hinders innovation in the transport layer that is needed to establish
-new services with different traffic characteristic and network requirements,
-given that performance enhancing extensions are in many case just not usable.
+ossification of the protocol stack that makes it difficult or at least overly
+complicated to deploy new protocols or protocol extensions. Examples are new
+transport protocols such as SCTP or QUIC, which can only be deployed using UDP
+as an encapsulation protocol, or TCP options that might be stripped at any
+point during the connection or lead to connection failure. This ossification
+does not only make protocol design complicated  as such cases must be handled
+by fall-back or happy-eyeball mechanisms, it also hinders innovation in the
+transport layer that is needed to establish new services with different
+traffic characteristic and network requirements, given that performance
+enhancing extensions are in many case just not usable.
 
 While UDP encapsulation provides the needed port information
 which is necessary for rather simple network mechanisms such NAT, stateful
