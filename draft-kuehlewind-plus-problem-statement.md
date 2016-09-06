@@ -47,19 +47,28 @@ difficult to deploy new protocols or protocol features due to implicit
 assumptions made by middleboxes about the traffic passing through them. Some
 of these middleboxes modify transport headers, as well; these modifications
 generally interfere with the operation and extensibility of the protocol.
-Integrity protection for all headers, and confidentiality protection for those
-that elements along the do not need to see to provide network functionality in
-a transport-independent way, is necessary to rectify this situation.
+
+Encryption of all headers and payload above the network layer would achieve
+this, but would be difficult to deploy in the present Internet: network
+address translators (NATs), firewalls, and other beneficial in-network
+functions do need to inspect some headers to operate. Encryption of as much as
+possible should then be the goal: integrity protection for all headers, and
+confidentiality protection for payload and headers that elements along the
+path do not need to see. Defining a common set of exposed headers then allows
+in-network functions to operate in a transport-independent way.
 
 We introduce the concept of a "path layer", an implicit pseudo-layer in the
-Internet architecture consisting of those in-network functions that make use
-of information above the network layer to function. This document details the
-problems that must be solved by the path layer, as a first step to making this
-layer explicit by giving control to endpoints over the boundary between
-integrity-protected and confidentiality-protected transport layer
-information. It additionally identifies constraints on the solution space, and
-lists initial use cases that must be addressed by a proposed solution to
-provide deployment incentives.
+Internet architecture consisting of those stateful, in-network functions that
+need transport layer information to function. The most common examples of path
+layer functions are NATs and stateful firewalls, which use transport-layer
+ports and TCP control flags, respectively.
+
+This document details the problems that must be solved by the path layer, as a
+first step to making this layer explicit by giving control to endpoints over
+the boundary between integrity-protected and confidentiality-protected
+transport layer information. It additionally identifies constraints on the
+solution space, and lists initial use cases that must be addressed by a
+proposed solution to provide deployment incentives.
 
 --- middle
 
